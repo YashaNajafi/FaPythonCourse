@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پخش کننده ویدیوی دوره</title>
+    <style>
+        @font-face {
+            font-family: YekanBakh;
+            src: url("Fonts/Yekan\ bakh\ light.TTF");
+            font-weight: normal;
+        }
+
+        @font-face {
+            font-family: YekanBakh;
+            src: url("Fonts/Yekan\ bakh\ bold.TTF");
+            font-weight: bold;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: YekanBakh;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        @media (min-width: 1024px) {
+            .main-content {
+                display: grid;
+                grid-template-columns: 350px 1fr;
+                gap: 2rem;
+            }
+
+            .video-section {
+                grid-column: 2;
+                grid-row: 1;
+            }
+
+            .sidebar {
+                grid-column: 1;
+                grid-row: 1;
+            }
+        }
+
+        .video-container {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-controls {
+            padding: 1rem;
+            background: #f8f9fa;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .video-controls button {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .video-controls button:hover {
+            background: #0056b3;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 5px;
+            background: #dee2e6;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .progress {
+            height: 100%;
+            background: #007bff;
+            border-radius: 5px;
+            width: 0;
+        }
+
+        .content-info {
+            padding: 2rem;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .creator-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .creator-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .creator-details h2 {
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .video-description {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+        }
+
+        .video-description h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #007bff;
+            display: inline-block;
+        }
+
+        .video-description p {
+            color: #505965;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .course-parts {
+            background: #f8f9fa;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .course-parts h3 {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .course-part {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .course-part:hover {
+            background: #e9ecef;
+        }
+
+        .course-part.active {
+            background: #e3f2fd;
+        }
+
+        .part-number {
+            background: #007bff;
+            color: white;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .part-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .part-info h4 {
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .part-info p {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1023px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .video-container {
+                margin-bottom: 1rem;
+            }
+
+            .content-info {
+                padding: 1rem;
+            }
+
+            .video-description {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .video-controls {
+                flex-wrap: wrap;
+            }
+
+            .progress-bar {
+                order: -1;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div class="video-section">
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <video id="courseVideo">
+                            <source src="WebScrap ( Learn ).mp4" type="video/mp4">
+                            مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                        </video>
+                    </div>
+                    <div class="video-controls">
+                        <button id="playPause">پخش</button>
+                        <div class="progress-bar">
+                            <div class="progress" id="progress"></div>
+                        </div>
+                        <span id="timeDisplay">00:00 / 00:00</span>
+                    </div>
+                </div>
+
+                <div class="video-description">
+                    <h3>توضیحات</h3>
+                    <p>وب اسکرپینگ تو دنیای پایتون یعنی جمع کردن اطلاعات از سایت‌ها به صورت خودکار. مثل این می‌مونه که به‌جای این که خودت بری تک‌تک صفحات یه سایتو بخونی، یه ربات کوچیک می‌نویسی که بره و داده‌ها رو واست بیاره. ابزارای معروفش مثل BeautifulSoup و Scrapy بهت کمک می‌کنن که HTML رو بخونی و دیتاها رو بکشی بیرون. فقط حواست باشه همیشه قوانین سایت‌ها و اخلاقیات رو رعایت کنی، چون بعضی جاها با این کار حال نمی‌کنن! 😄</p>
+                </div>
+            </div>
+
+            <aside class="sidebar">
+                <div class="creator-info">
+                    <img src="profile.jpg" alt="Profile" class="creator-avatar">
+                    <div class="creator-details">
+                        <h2>یاشا نجفی</h2>
+                        <p>برنامه نویس حوزه وب و سرور</p>
+                    </div>
+                </div>
+
+                <div class="course-parts">
+                    <h3>جلسات دوره</h3>
+                    <div class="course-part active">
+                        <span class="part-number">1</span>
+                        <div class="part-info">
+                            <h4>شروع وب اسکرپینگ</h4>
+                            <p>15 دقیقه</p>
+                        </div>
+                    </div>
+                    <div class="course-part">
+                        <span class="part-number">2</span>
+                        <div class="part-info">
+                            <h4>کار با سلنیوم</h4>
+                            <p>در حال ضبط...</p>
+                        </div>
+                    </div>
+                    <div class="course-part">
+                        <span class="part-number">3</span>
+                        <div class="part-info">
+                            <h4>نکات تکمیلی</h4>
+                            <p>در حال ضبط...</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('courseVideo');
+        const playPauseButton = document.getElementById('playPause');
+        const progress = document.getElementById('progress');
+        const progressBar = document.querySelector('.progress-bar');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+
+        playPauseButton.addEventListener('click', togglePlay);
+
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+                playPauseButton.textContent = 'توقف';
+            } else {
+                video.pause();
+                playPauseButton.textContent = 'پخش';
+            }
+        }
+
+
+        video.addEventListener('timeupdate', updateProgress);
+
+        function updateProgress() {
+            const percentage = (video.currentTime / video.duration) * 100;
+            progress.style.width = percentage + '%';
+
+
+            const currentMinutes = Math.floor(video.currentTime / 60);
+            const currentSeconds = Math.floor(video.currentTime % 60);
+            const totalMinutes = Math.floor(video.duration / 60);
+            const totalSeconds = Math.floor(video.duration % 60);
+
+            timeDisplay.textContent = `${padZero(currentMinutes)}:${padZero(currentSeconds)} / ${padZero(totalMinutes)}:${padZero(totalSeconds)}`;
+        }
+
+
+        progressBar.addEventListener('click', seek);
+
+        function seek(e) {
+            const rect = progressBar.getBoundingClientRect();
+            const offsetX = rect.width - (e.clientX - rect.left);
+            const percent = offsetX / progressBar.offsetWidth;
+            video.currentTime = percent * video.duration;
+        }
+
+        function padZero(number) {
+            return number.toString().padStart(2, '0');
+        }
+    </script>
+</body>
+</html>
